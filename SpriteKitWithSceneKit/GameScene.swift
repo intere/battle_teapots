@@ -47,7 +47,7 @@ class GameScene: SKScene {
         enemyTeapotSM.enter(Hunting.self)
 
         
-        setupPlayer()
+        setupPlayer(location: CGPoint(x: self.frame.midX, y: 150))
         
 //        let areaConstraint = SKConstraint.distance(SKRange(upperLimit: 600), to: CGPoint(x: CGFloat(self.frame.midX), y: CGFloat(self.frame.midY)))
 //        teapotNode.constraints = [ areaConstraint ]
@@ -62,14 +62,14 @@ class GameScene: SKScene {
         
     }
     
-    func setupPlayer() {
+    func setupPlayer(location: CGPoint) {
         let playerNode = SK3DNode(viewportSize: CGSize(width: 100.0, height: 100.0))
 
         let player = SCNScene(named: "bluebox.scn")
 
         playerNode.name = "player"
         //playerNode.position = CGPoint(x: self.frame.midX, y: 0)
-        playerNode.position = CGPoint(x: self.frame.midX, y: 150)
+        playerNode.position = location
         playerAgent.position = vector_float2(Float(playerNode.position.x), Float(playerNode.position.y))
         playerNode.scnScene = player
         self.addChild(playerNode)
@@ -82,7 +82,7 @@ class GameScene: SKScene {
                 playerNode.run(SKAction.move(to: loc, duration: 1))
                 playerAgent.position = vector_float2( Float(loc.x), Float(loc.y))
             } else {
-                setupPlayer();
+                setupPlayer(location: loc);
             }
         }
     }
