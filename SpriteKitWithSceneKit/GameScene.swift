@@ -103,10 +103,14 @@ class GameScene: SKScene {
         if let enemyTeapot = self.childNode(withName: "enemy teapot") {
             enemyTeapot.position = CGPoint(x: CGFloat(enemyTeapotAgent.position.x), y: CGFloat(enemyTeapotAgent.position.y))
 
+            if enemyTeapotAgent.position.x <= 10 || enemyTeapotAgent.position.x >= Float(self.size.width) - 10 || enemyTeapotAgent.position.y <= 10 || enemyTeapotAgent.position.y >= Float(self.size.height) - 10 {
+
+                targetPlayer()
+                return
+            }
+
             if (distance(enemyTeapotAgent.position, playerAgent.position) < 500) {
-                enemyTeapotSM.enter(Targeting.self)
-                enemyTeapotAgent.behavior?.setWeight(0, for: etWanderGoal)
-                enemyTeapotAgent.behavior?.setWeight(10, for: etSeekGoal)
+                targetPlayer()
                 
                 if let _ = self.childNode(withName: "torpedo") {
                     
@@ -129,9 +133,7 @@ class GameScene: SKScene {
                 }
                 
             } else {
-                enemyTeapotSM.enter(Hunting.self)
-                enemyTeapotAgent.behavior?.setWeight(0, for: etSeekGoal)
-                enemyTeapotAgent.behavior?.setWeight(10, for: etWanderGoal)
+                huntPlayer()
             }
         }
         
@@ -179,4 +181,30 @@ class GameScene: SKScene {
             pu.position = CGPoint(x: CGFloat(randValX) * self.frame.maxX, y: CGFloat(randValY) * self.frame.maxY)
         }
     }
+}
+
+// MARK: - Helpers
+
+extension GameScene {
+
+    func targetPlayer() {
+        if enemyTeapotSM.currentState is Targeting {
+            return
+        }
+        print("Switching to Targeting Player (seeking)")
+        enemyTeapotSM.enter(Targeting.self)
+        enemyTeapotAgent.behavior?.setWeight(0, for: etWanderGoal)
+        enemyTeapotAgent.behavior?.setWeight(10, for: etSeekGoal)
+    }
+
+    func huntPlayer() {
+        if enemyTeapotSM.currentState is Hunting {
+            return
+        }
+        print("Switching to Hunting player (wandering)")
+        enemyTeapotSM.enter(Hunting.self)
+        enemyTeapotAgent.behavior?.setWeight(0, for: etSeekGoal)
+        enemyTeapotAgent.behavior?.setWeight(10, for: etWanderGoal)
+    }
+
 }
