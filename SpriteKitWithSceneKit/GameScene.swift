@@ -11,6 +11,7 @@ let smokeEmitter = SKEmitterNode(fileNamed: "SmokeParticles.sks")
 let randomDistribution = GKRandomDistribution(lowestValue: 0, highestValue: 200)
 
 let shootSound = SKAction.playSoundFileNamed("pew.m4a", waitForCompletion: false)
+let explosionSound = SKAction.playSoundFileNamed("explosion.m4a", waitForCompletion: false)
 
 class GameScene: SKScene {
     
@@ -153,6 +154,7 @@ class GameScene: SKScene {
                         puff.particleBirthRate = 0
                         }, SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
                     score = score - 1
+                    run(explosionSound)
                 }
             }
         }
