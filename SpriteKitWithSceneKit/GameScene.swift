@@ -7,12 +7,12 @@ import SceneKit
 import GameplayKit
 
 let smokeEmitter = SKEmitterNode(fileNamed: "SmokeParticles.sks")
-
 let randomDistribution = GKRandomDistribution(lowestValue: 0, highestValue: 200)
-
 let shootSound = SKAction.playSoundFileNamed("pew.m4a", waitForCompletion: false)
 let explosionSound = SKAction.playSoundFileNamed("explosion.m4a", waitForCompletion: false)
 
+
+/// This is the Game Scene
 class GameScene: SKScene {
     
     var gameNode : SK3DNode = SK3DNode(viewportSize: CGSize(width: 150, height: 150.0))
@@ -28,7 +28,7 @@ class GameScene: SKScene {
     private var lastUpdateTime : TimeInterval = 0
     
     override func sceneDidLoad() {
-        self.lastUpdateTime = 0
+        lastUpdateTime = 0
         etSeekGoal = GKGoal(toInterceptAgent: playerAgent, maxPredictionTime: 1)
     }
     
@@ -82,7 +82,7 @@ class GameScene: SKScene {
                 playerNode.run(SKAction.move(to: loc, duration: 1))
                 playerAgent.position = vector_float2( Float(loc.x), Float(loc.y))
             } else {
-                setupPlayer(location: loc);
+                setupPlayer(location: loc)
             }
         }
     }
